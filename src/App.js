@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import {connect} from 'substate-connect';
 
 import Counter from './Counter';
+import Light from './Light';
 import appState from './substate';
 
 const AddToCounter = ()=>{
-  appState.emit('UPDATE_STATE', {count: (appState.getProp('count') + 1)});
+  const c = (appState.getProp('count') + 1);
+  appState.emit('UPDATE_STATE', {count: c, isMultiple: (c%7 === 0? true: false)});
 }
 
 const WiredCounter = connect(appState, {count: 'count'})(Counter);
+const WiredLight = connect(appState, {on: 'isMultiple'})(Light);
 
 class App extends Component {
   componentWillMount(){
@@ -18,9 +21,14 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <h1>
+          substate demo
+        </h1>
+        <p>
+          When the counter is a multiple of 7, the "light" will go on.
+        </p>
         <WiredCounter clickHandler={AddToCounter}/>
-        counter, multiplier light, number to check for
-        This light will go onwhen the number is a multiple of 7
+        <WiredLight/>
       </div>
     );
   }
