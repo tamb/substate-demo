@@ -3,12 +3,7 @@ import {connect} from 'substate-connect';
 
 import Counter from './Counter';
 import Light from './Light';
-import appState from './substate';
-
-const AddToCounter = ()=>{
-  const c = (appState.getProp('count') + 1);
-  appState.emit('UPDATE_STATE', {count: c, isMultiple: (c%7 === 0? true: false)});
-}
+import appState, {AddToCounter} from './substate';
 
 const WiredCounter = connect(appState, {count: 'count'})(Counter);
 const WiredLight = connect(appState, {on: 'isMultiple'})(Light);
